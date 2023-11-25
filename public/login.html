@@ -83,34 +83,59 @@
       firebase.initializeApp(firebaseConfig);
     </script>
 
+    <div class="container mt-3">
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="name"
+          id="name-new"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="email"
+          class="form-control"
+          placeholder="email"
+          id="email-new"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="pw"
+          id="pw-new"
+        />
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        id="register"
+        onclick="loginSubmit()"
+      >
+        로그인
+      </button>
+    </div>
+
     <script>
       const db = firebase.firestore();
-      db.collection("product")
-        .get()
-        .then((res) => {
-          res.forEach((doc) => {
-            console.log(doc.data());
-            const data = doc.data();
-            const div = `
-            <div class="product">
-              <div
-                class="thumbnail"
-                style="background-image: url(${data.이미지})"
-              ></div>
-              <div class="flex-grow-1 p-4">
-                <h5 class="title">${data.제목}</h5>
-                <p class="date">${data.날짜}</p>
-                <h5 class="content">${data.내용}</h5>
-                <p class="price">${data.가격}원</p>
-                <p class="float-end">좋아요 0</p>
-              </div>
-            </div>
-            `;
-            $(".container").append(div);
-          });
-        });
-    </script>
+      const storage = firebase.storage();
 
-    <div class="container mt-3"></div>
+      function loginSubmit() {
+        const email = $("#email-new").val();
+        const password = $("#pw-new").val();
+
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then((res) => {
+            console.log(res.user);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    </script>
   </body>
 </html>
